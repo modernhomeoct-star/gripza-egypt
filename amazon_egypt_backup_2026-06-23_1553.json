@@ -1,0 +1,115 @@
+{
+  "products": [
+    {
+      "id": "f0c309f2-25c6-4864-a3ed-770b62623288",
+      "name": "Hi Color Silicone Cover for LG AN-MR600/AN-MR650 / AN-MR18BA / AN-MR19BA/AN-MR20GA TV Remote Control Protective Sleeve for LG Magic TV Remote Cover Case(Black)",
+      "asin": "B0BD8H8B2Y",
+      "sku": "",
+      "price": 299,
+      "price_fb": 0,
+      "cost": 100,
+      "fee_percent": 15,
+      "shipping": 50,
+      "stock": 47,
+      "min_stock": 10,
+      "weight": 0,
+      "has_image": true,
+      "deleted": false
+    }
+  ],
+  "orders": [
+    {
+      "id": "7821a781-c1e3-4d42-9018-887920755d6b",
+      "order_num": "",
+      "source": "فيسبوك",
+      "date": "2026-06-23",
+      "status": "مكتمل",
+      "revenue": 598,
+      "fee": 0,
+      "ship_cost": 100,
+      "cogs": 200,
+      "net_profit": 298,
+      "items": [
+        {
+          "product_id": "f0c309f2-25c6-4864-a3ed-770b62623288",
+          "product_name": "Hi Color Silicone Cover for LG AN-MR600/AN-MR650 / AN-MR18BA / AN-MR19BA/AN-MR20GA TV Remote Control Protective Sleeve for LG Magic TV Remote Cover Case(Black)",
+          "qty": 2,
+          "price": 299,
+          "revenue": 598,
+          "fee": 0,
+          "ship_cost": 100,
+          "cogs": 200,
+          "net_profit": 298
+        }
+      ]
+    },
+    {
+      "id": "0f2a9432-41a5-4c9b-9f26-6cc1d1432b0b",
+      "order_num": "",
+      "source": "فيسبوك",
+      "date": "2026-06-23",
+      "status": "مكتمل",
+      "revenue": 598,
+      "fee": 0,
+      "ship_cost": 100,
+      "cogs": 200,
+      "net_profit": 298,
+      "items": [
+        {
+          "product_id": "f0c309f2-25c6-4864-a3ed-770b62623288",
+          "product_name": "Hi Color Silicone Cover for LG AN-MR600/AN-MR650 / AN-MR18BA / AN-MR19BA/AN-MR20GA TV Remote Control Protective Sleeve for LG Magic TV Remote Cover Case(Black)",
+          "qty": 1,
+          "price": 299,
+          "revenue": 299,
+          "fee": 0,
+          "ship_cost": 50,
+          "cogs": 100,
+          "net_profit": 149
+        },
+        {
+          "product_id": "f0c309f2-25c6-4864-a3ed-770b62623288",
+          "product_name": "Hi Color Silicone Cover for LG AN-MR600/AN-MR650 / AN-MR18BA / AN-MR19BA/AN-MR20GA TV Remote Control Protective Sleeve for LG Magic TV Remote Cover Case(Black)",
+          "qty": 1,
+          "price": 299,
+          "revenue": 299,
+          "fee": 0,
+          "ship_cost": 50,
+          "cogs": 100,
+          "net_profit": 149
+        }
+      ]
+    }
+  ],
+  "returns": [
+    {
+      "id": "1782198390781.0",
+      "order_id": "7821a781-c1e3-4d42-9018-887920755d6b",
+      "type": "رفض_عميل",
+      "product_cond": "جيدة",
+      "refund_amount": 0,
+      "safety_claim": false,
+      "claim_value": 0,
+      "date": "2026-06-23",
+      "source": "فيسبوك",
+      "items": [
+        {
+          "product_id": "f0c309f2-25c6-4864-a3ed-770b62623288",
+          "product_name": "Hi Color Silicone Cover for LG AN-MR600/AN-MR650 / AN-MR18BA / AN-MR19BA/AN-MR20GA TV Remote Control Protective Sleeve for LG Magic TV Remote Cover Case(Black)",
+          "qty": 1,
+          "revenue": 299,
+          "fee": 44.85,
+          "ship_cost": 0,
+          "cogs": 100
+        }
+      ]
+    }
+  ],
+  "settings": {
+    "vat_percent": 14,
+    "fee_default": 15,
+    "ship_default": 0,
+    "fee_tiers": [],
+    "ship_tiers": []
+  },
+  "log": []
+}
