@@ -562,13 +562,12 @@
       <button class="nav-btn" onclick="showPage('returns');closeDrawer()"><i class="ti ti-arrow-back-up"></i> المرتجعات</button>
       <button class="nav-btn" onclick="showPage('log');closeDrawer()"><i class="ti ti-history"></i> سجل الحركات</button>
       <button class="nav-btn" onclick="showPage('settings');closeDrawer()"><i class="ti ti-settings"></i> الإعدادات</button>
-      <div style="height:1px;background:rgba(255,255,255,0.08);margin:8px 4px"></div>
+    </nav>
+    <div class="sidebar-bottom" style="padding-bottom:max(10px,env(safe-area-inset-bottom))">
+      <button class="dark-toggle" onclick="toggleDark()" id="dark-btn-mob"><i class="ti ti-moon"></i> <span>الوضع الداكن</span></button>
       <button class="nav-btn" onclick="exportBackup();closeDrawer()"><i class="ti ti-download"></i> نسخة احتياطية</button>
       <button class="nav-btn" onclick="document.getElementById('importFile-mob').click();closeDrawer()"><i class="ti ti-upload"></i> استيراد JSON</button>
       <input type="file" id="importFile-mob" accept=".json" style="display:none" onchange="importJSON(this)">
-    </nav>
-    <div class="sidebar-bottom">
-      <button class="dark-toggle" onclick="toggleDark()" id="dark-btn-mob"><i class="ti ti-moon"></i> <span>الوضع الداكن</span></button>
     </div>
   </div>
 
@@ -924,8 +923,10 @@
       <div class="card" style="margin-bottom:18px">
         <div class="card-header" style="justify-content:space-between">
           <span><i class="ti ti-cloud-upload" style="color:var(--blue)"></i> النسخ الاحتياطي التلقائي</span>
-          <div style="display:flex;gap:8px;align-items:center">
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
             <button class="btn btn-sm btn-success" onclick="exportBackup()"><i class="ti ti-download"></i> تحميل الآن</button>
+            <button class="btn btn-sm" onclick="document.getElementById('importFile-settings').click()" style="background:var(--purple-light);color:var(--purple);border-color:#DDD6FE"><i class="ti ti-upload"></i> استيراد JSON</button>
+            <input type="file" id="importFile-settings" accept=".json" style="display:none" onchange="importJSON(this)">
             <button class="btn btn-sm btn-primary" onclick="scheduleEmailBackup()"><i class="ti ti-mail"></i> إرسال بالبريد</button>
           </div>
         </div>
