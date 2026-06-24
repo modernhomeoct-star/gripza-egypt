@@ -293,14 +293,19 @@
       background:linear-gradient(180deg,var(--sidebar-from),var(--sidebar-to));
       z-index:500;display:flex;flex-direction:column;
       transform:translateX(100%);transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);
-      box-shadow:-8px 0 32px rgba(0,0,0,0.3);overflow-y:auto;
+      box-shadow:-8px 0 32px rgba(0,0,0,0.3);overflow:hidden;
       padding-bottom:env(safe-area-inset-bottom,10px)
     }
     .sidebar-drawer.open{transform:translateX(0)}
+    .sidebar-drawer nav.nav{
+      flex:1;overflow-y:auto;
+    }
     .sidebar-drawer .sidebar-bottom{
-      position:sticky;bottom:0;margin-top:auto;
-      background:linear-gradient(180deg,transparent,var(--sidebar-to) 25%);
-      padding-top:12px
+      flex-shrink:0;
+      border-top:1px solid rgba(255,255,255,0.08);
+      background:var(--sidebar-to);
+      padding:10px;
+      display:flex;flex-direction:column;gap:4px
     }
 
     /* ── Mobile Top Bar ── */
