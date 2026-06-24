@@ -2123,19 +2123,7 @@ function migrateDB(d){
   // Migrate integer IDs to UUID-style strings if still numeric
   d.products?.forEach(p=>{if(typeof p.id==='number') p.id=String(p.id); if(p.price_fb===undefined) p.price_fb=0; if(p.weight===undefined) p.weight=0;});
   d.orders?.forEach(o=>{if(typeof o.id==='number') o.id=String(o.id);});
-  /* ترحيل الصور القديمة (base64) من localStorage إلى IndexedDB */
-  let needsSave=false;
-  if(d.products){
-    d.products.forEach(p=>{
-      if(p.image && p.image.startsWith('data:')){
-        saveImage(p.id, p.image).then(()=>{ imgCache[p.id]=p.image; });
-        p.has_image=true;
-        delete p.image;
-        needsSave=true;
-      }
-    });
-  }
-  if(needsSave) setTimeout(()=>saveDB(),200);
+  /* ملاحظة: الصور بتتحفظ في importJSON مباشرة — مش هنا */
   // ترحيل الإعدادات لو مش موجودة
   if(!d.settings) d.settings={vat_percent:14,fee_default:15,ship_default:0,fee_tiers:[],ship_tiers:[]};
   if(d.settings.vat_percent===undefined) d.settings.vat_percent=14;
