@@ -3545,13 +3545,29 @@ function exportJSON(){
 function importJSON(input){
   const file=input.files[0];if(!file)return;
   const reader=new FileReader();
-  reader.onload=e=>{
+  reader.onload=async e=>{
     try{
       const data=JSON.parse(e.target.result);
       migrateDB(data);
-      if(data.products&&(data.orders||data.sales)){DB=data;saveDB();showPage('dashboard');toastSuccess('تم الاستيراد بنجاح ✓');}
+      if(data.products&&(data.orders||data.sales)){
+        // استعادة الصور من الـ JSON إلى IndexedDB
+        let imgCount = 0;
+        for(const p of data.products){
+          if(p.image && p.image.startsWith('data:')){
+            await saveImage(p.id, p.image);
+            imgCache[p.id] = p.image;
+            p.has_image = true;
+            imgCount++;
+            delete p.image;
+          }
+        }
+        DB=data;
+        saveDB();
+        showPage('dashboard');
+        toastSuccess(`تم الاستيراد بنجاح ✓${imgCount>0?' ('+imgCount+' صورة)':''}`);
+      }
       else toastError('ملف غير صحيح');
-    }catch{toastError('خطأ في قراءة الملف');}
+    }catch(err){toastError('خطأ في قراءة الملف'); console.error(err);}
   };
   reader.readAsText(file);input.value='';
 }
@@ -3871,7 +3887,7 @@ function autoBackupTrigger(){
   setTimeout(()=>scheduleNextBackup(s), 1000);
 }
 
-function exportBackup(){
+async function exportBackup(){
   const wrap = document.getElementById('backup-progress-wrap');
   const bar  = document.getElementById('backup-progress-bar');
   const lbl  = document.getElementById('backup-progress-label');
@@ -3880,28 +3896,42 @@ function exportBackup(){
   // animated progress
   let prog = 0;
   const tick = setInterval(()=>{
-    prog = Math.min(prog+Math.random()*25, 90);
+    prog = Math.min(prog+Math.random()*15, 60);
     if(bar) bar.style.width = prog+'%';
   }, 120);
 
-  setTimeout(()=>{
+  try {
+    // جمع كل الصور من IndexedDB وإضافتها للـ JSON
+    const exportData = JSON.parse(JSON.stringify(DB)); // deep copy
+    for(const p of exportData.products){
+      if(p.has_image){
+        const imgData = imgCache[p.id] || await getImage(p.id);
+        if(imgData) p.image = imgData;
+      }
+    }
+
     clearInterval(tick);
     if(bar) bar.style.width='100%';
-    if(lbl) lbl.textContent='✅ تم إنشاء النسخة بنجاح!';
+    if(lbl) lbl.textContent='✅ تم إنشاء النسخة بنجاح (مع الصور)!';
+
     const now = new Date();
     const ts  = now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0')
       +'_'+String(now.getHours()).padStart(2,'0')+String(now.getMinutes()).padStart(2,'0');
-    const blob = new Blob([JSON.stringify(DB,null,2)],{type:'application/json'});
+    const blob = new Blob([JSON.stringify(exportData,null,2)],{type:'application/json'});
     const a    = document.createElement('a');
     a.href     = URL.createObjectURL(blob);
     a.download = `amazon_egypt_backup_${ts}.json`;
     a.click();
     metaSet(BACKUP_LAST_KEY, now.toISOString());
-    toastSuccess('تم تحميل النسخة الاحتياطية ✓');
-    addLog('backup','💾','#EFF6FF','تم تصدير نسخة احتياطية تلقائية');
+    toastSuccess('تم تحميل النسخة الاحتياطية مع الصور ✓');
+    addLog('backup','💾','#EFF6FF','تم تصدير نسخة احتياطية كاملة مع الصور');
     updateBackupStatusBanner();
     setTimeout(()=>{ if(wrap) wrap.style.display='none'; if(bar) bar.style.width='0%'; },2500);
-  }, 800);
+  } catch(e) {
+    clearInterval(tick);
+    toastError('خطأ في تصدير النسخة الاحتياطية');
+    console.error(e);
+  }
 }
 
 async function scheduleEmailBackup(){
