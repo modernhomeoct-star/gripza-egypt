@@ -293,19 +293,14 @@
       background:linear-gradient(180deg,var(--sidebar-from),var(--sidebar-to));
       z-index:500;display:flex;flex-direction:column;
       transform:translateX(100%);transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);
-      box-shadow:-8px 0 32px rgba(0,0,0,0.3);overflow:hidden;
+      box-shadow:-8px 0 32px rgba(0,0,0,0.3);overflow-y:auto;
       padding-bottom:env(safe-area-inset-bottom,10px)
     }
     .sidebar-drawer.open{transform:translateX(0)}
-    .sidebar-drawer nav.nav{
-      flex:1;overflow-y:auto;
-    }
     .sidebar-drawer .sidebar-bottom{
-      flex-shrink:0;
-      border-top:1px solid rgba(255,255,255,0.08);
-      background:var(--sidebar-to);
-      padding:10px;
-      display:flex;flex-direction:column;gap:4px
+      position:sticky;bottom:0;margin-top:auto;
+      background:linear-gradient(180deg,transparent,var(--sidebar-to) 25%);
+      padding-top:12px
     }
 
     /* ── Mobile Top Bar ── */
@@ -567,12 +562,13 @@
       <button class="nav-btn" onclick="showPage('returns');closeDrawer()"><i class="ti ti-arrow-back-up"></i> المرتجعات</button>
       <button class="nav-btn" onclick="showPage('log');closeDrawer()"><i class="ti ti-history"></i> سجل الحركات</button>
       <button class="nav-btn" onclick="showPage('settings');closeDrawer()"><i class="ti ti-settings"></i> الإعدادات</button>
-    </nav>
-    <div class="sidebar-bottom" style="padding-bottom:max(10px,env(safe-area-inset-bottom))">
-      <button class="dark-toggle" onclick="toggleDark()" id="dark-btn-mob"><i class="ti ti-moon"></i> <span>الوضع الداكن</span></button>
+      <div style="height:1px;background:rgba(255,255,255,0.08);margin:8px 4px"></div>
       <button class="nav-btn" onclick="exportBackup();closeDrawer()"><i class="ti ti-download"></i> نسخة احتياطية</button>
       <button class="nav-btn" onclick="document.getElementById('importFile-mob').click();closeDrawer()"><i class="ti ti-upload"></i> استيراد JSON</button>
       <input type="file" id="importFile-mob" accept=".json" style="display:none" onchange="importJSON(this)">
+    </nav>
+    <div class="sidebar-bottom">
+      <button class="dark-toggle" onclick="toggleDark()" id="dark-btn-mob"><i class="ti ti-moon"></i> <span>الوضع الداكن</span></button>
     </div>
   </div>
 
