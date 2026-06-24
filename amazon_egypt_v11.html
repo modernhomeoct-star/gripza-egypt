@@ -293,9 +293,15 @@
       background:linear-gradient(180deg,var(--sidebar-from),var(--sidebar-to));
       z-index:500;display:flex;flex-direction:column;
       transform:translateX(100%);transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);
-      box-shadow:-8px 0 32px rgba(0,0,0,0.3);overflow-y:auto
+      box-shadow:-8px 0 32px rgba(0,0,0,0.3);overflow-y:auto;
+      padding-bottom:env(safe-area-inset-bottom,10px)
     }
     .sidebar-drawer.open{transform:translateX(0)}
+    .sidebar-drawer .sidebar-bottom{
+      position:sticky;bottom:0;margin-top:auto;
+      background:linear-gradient(180deg,transparent,var(--sidebar-to) 25%);
+      padding-top:12px
+    }
 
     /* ── Mobile Top Bar ── */
     .mobile-topbar{
@@ -557,10 +563,11 @@
       <button class="nav-btn" onclick="showPage('log');closeDrawer()"><i class="ti ti-history"></i> سجل الحركات</button>
       <button class="nav-btn" onclick="showPage('settings');closeDrawer()"><i class="ti ti-settings"></i> الإعدادات</button>
     </nav>
-    <div class="sidebar-bottom">
+    <div class="sidebar-bottom" style="padding-bottom:max(10px,env(safe-area-inset-bottom))">
       <button class="dark-toggle" onclick="toggleDark()" id="dark-btn-mob"><i class="ti ti-moon"></i> <span>الوضع الداكن</span></button>
       <button class="nav-btn" onclick="exportBackup();closeDrawer()"><i class="ti ti-download"></i> نسخة احتياطية</button>
-      <button class="nav-btn" onclick="document.getElementById('importFile').click();closeDrawer()"><i class="ti ti-upload"></i> استيراد JSON</button>
+      <button class="nav-btn" onclick="document.getElementById('importFile-mob').click();closeDrawer()"><i class="ti ti-upload"></i> استيراد JSON</button>
+      <input type="file" id="importFile-mob" accept=".json" style="display:none" onchange="importJSON(this)">
     </div>
   </div>
 
@@ -2114,7 +2121,19 @@ function migrateDB(d){
   // Migrate integer IDs to UUID-style strings if still numeric
   d.products?.forEach(p=>{if(typeof p.id==='number') p.id=String(p.id); if(p.price_fb===undefined) p.price_fb=0; if(p.weight===undefined) p.weight=0;});
   d.orders?.forEach(o=>{if(typeof o.id==='number') o.id=String(o.id);});
-  /* ملاحظة: الصور بتتحفظ في importJSON مباشرة — مش هنا */
+  /* ترحيل الصور القديمة (base64) من localStorage إلى IndexedDB */
+  let needsSave=false;
+  if(d.products){
+    d.products.forEach(p=>{
+      if(p.image && p.image.startsWith('data:')){
+        saveImage(p.id, p.image).then(()=>{ imgCache[p.id]=p.image; });
+        p.has_image=true;
+        delete p.image;
+        needsSave=true;
+      }
+    });
+  }
+  if(needsSave) setTimeout(()=>saveDB(),200);
   // ترحيل الإعدادات لو مش موجودة
   if(!d.settings) d.settings={vat_percent:14,fee_default:15,ship_default:0,fee_tiers:[],ship_tiers:[]};
   if(d.settings.vat_percent===undefined) d.settings.vat_percent=14;
